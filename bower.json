@@ -1,6 +1,8 @@
 {
-  "name": "gruntRocks",
+  "name": "BillowShit",
   "dependencies": {
-    "bootstrap": "~3.3.4"
+    "bootstrap": "~3.3.4",
+    "jquery": "~2.1.3",
+    "jquery-validation": "~1.13.1"
   }
 }

@@ -11,19 +11,22 @@
     	      },
     	      js_frontend: {
     	        src: [
-    	          './html/bower_components/jquery/jquery.js',
-    	          './html/bower_components/bootstrap/dist/js/bootstrap.js',
-    	          './html/js/frontend.js'
+    	          'bower_components/jquery/dist/jquery.js',
+    	          'bower_components/bootstrap/dist/js/bootstrap.js',
+    	          'bower_components/jquery-validation/dist/jquery.validate.js',
+    	          'bower_components/jquery-validation/src/localization/messages_de.js',
+    	          'js/frontend.js'
     	        ],
-    	        dest: './html/js/comp_frontend.js',
+    	        dest: 'js/comp_frontend.js',
     	      },
     	      js_backend: {
     	        src: [
-    	          './html/bower_components/jquery/jquery.js',
-    	          './html/bower_components/bootstrap/dist/js/bootstrap.js',
-    	          './html/js/backend.js'
+    	          'bower_components/jquery/dist/jquery.js',
+    	          'bower_components/bootstrap/dist/js/bootstrap.js',    	          
+    	          'bower_components/jquery-validation/dist/jquery.validate.min.js',
+    	          'js/backend.js'
     	        ],
-    	        dest: './html/js/comp_backend.js',
+    	        dest: 'js/comp_backend.js',
     	      },
     	    },
 	    less: {
@@ -33,9 +36,9 @@
                 },
                 files: {
                   //compiling frontend.less into frontend.css
-                  "./html/css/frontend.css":"./html/stylesheets/frontend.less",
+                  "css/frontend.css":"stylesheets/frontend.less",
                   //compiling backend.less into backend.css
-                  "./html/css/backend.css":"./html/stylesheets/backend.less"
+                  "css/backend.css":"stylesheets/backend.less"
                 }
             }
         },
@@ -45,7 +48,7 @@
             },
             frontend: {
               files: {
-            	  '..'/html/js/frontend.js: './public/assets/javascript/frontend.js',
+            	  './html/js/frontend.js': './public/assets/javascript/frontend.js',
               }
             },
             backend: {
@@ -54,16 +57,25 @@
               }
             },
           },
-        phpunit{
+        phpunit: {
           //...
         },
-        watch{
+        watch: {
           //...
+        	src: {
+        		files: ['js/frontend.js'],
+        		tasks: ['concat']
+        	}
         }
       });
 
     // Plugin loading
-
+      grunt.loadNpmTasks('grunt-contrib-concat');
+      grunt.loadNpmTasks('grunt-contrib-less');
+      grunt.loadNpmTasks('grunt-contrib-uglify');
+      grunt.loadNpmTasks('grunt-contrib-watch');
     // Task definition
+      //default
+      	grunt.registerTask('default', ['less', 'concat']);
 
   };
