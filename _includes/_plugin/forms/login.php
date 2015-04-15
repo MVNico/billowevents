@@ -1,4 +1,31 @@
-<form class="form-horizontal" id="login-form">
+<?php
+	if(isset($_POST['submit'])){
+		
+		xDebug($_POST);
+	   
+		$rules_array = array
+		(
+	        'login_name'=>array('type'=>'string',  'required'=>true, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>true),
+	        'login_password'=>array('type'=>'string',  'required'=>true, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>false),
+	    );
+		
+		$validate = new validation();
+		$validate->addSource($_POST);
+		$validate->AddRules($rules_array);
+		$validate->run();
+		
+		if(sizeof($validate->errors) > 0)
+		{
+			xDebug($validate->errors);
+		}
+		
+		/*** show the array of validated and sanitized variables ***/
+		xDebug($validate->sanitized);
+	}
+?>
+
+
+<form class="form-horizontal" id="login-form" method="post" autocomplete="off">
 	<fieldset>
 	
 	<!-- Form Name -->
@@ -22,21 +49,13 @@
 	  </div>
 	</div>
 	
-	<!-- Button -->
+	<!-- Button (Double) -->
 	<div class="form-group">
-	  <label class="col-md-4 control-label" for="login_btn"></label>
-	  <div class="col-md-4">
-	    <button id="login_btn" name="login_btn" class="btn btn-primary">Login</button>
+	  <label class="col-md-4 control-label" for="submit"></label>
+	  <div class="col-md-8">
+	    <button id="login_btn" name="login_btn" class="btn btn-success">Login</button>
+	    <button id="register_btn" name="register_btn" class="btn btn-success">Registrieren</button>
 	  </div>
 	</div>
-	
-	<!-- Button -->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="register_btn"></label>
-	  <div class="col-md-4">
-	    <button id="register_btn" name="register_btn" class="btn btn-primary">Register</button>
-	  </div>
-	</div>
-	
 	</fieldset>
 </form>

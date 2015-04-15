@@ -35,6 +35,20 @@ $().ready(function(){
 		    agree: "required" /* Abkürzung für agree:{required:true} */
 		  }
 		});
+	$("#login-form").validate({
+		/* Hier werden die Werte für die Validierung gesetzt */
+		rules: {
+			username: {
+				required: true,
+				minlength: 2,
+				specChar: true
+			},
+			password: {
+				required: true,
+				minlength: 6,
+			}
+		}
+	});
 	/* Erstellt automatisch ein Benutzernamen aus dem bereits eingegeben Vor- und Nachnamen */
 	$("#username").focus(function(){
 		var firstname = $("#firstname").val();
