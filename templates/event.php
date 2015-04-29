@@ -18,6 +18,13 @@
         <?php echo createMenu($Menu[0]['child'], '1', $activePage);?>
         </div>
         <div class="clear"></div>
+        
+        <div class="container-fluid">
+		  <div class="row">
+			  <div class="col-md-4">Menu mit Events und Notizen</div>
+			  <div class="col-md-8">Formulare und Grids für die Events</div>
+			</div>
+		</div>
 <?php
 	/* Hier dann die DB Verbindung für den Content der Seite*/
 	
@@ -27,5 +34,3 @@
 	
 	include_once PARTIALS_PATH.'/footer.php';
 ?>
-
-
