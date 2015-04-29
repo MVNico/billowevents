@@ -433,6 +433,8 @@ class validation{
             $this->errors[$var] = $var . ' is Invalid';
         }
     }
+    
+    private function validateDate($date, $format = 'Y-m-d H:i:s')
 
     ########## SANITIZING METHODS ############
     

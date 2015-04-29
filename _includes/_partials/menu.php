@@ -3,17 +3,31 @@
 $arrMenu = array(
 	1=>array(
 		'parent'=>0,
-		'label'=>'Home',
+		'label'=>'Startseite',
 		'template'=>'home',
-		'file'=>'home',
+		'file'=>'login',
 		'name'=>'home',
 	),
 	2=>array(
-		'parent'=>1,
+		'parent'=>0,
 		'label'=>'Registrieren',
 		'template'=>'home',
-		'file'=>'register',
-		'name'=>'register',
+		'file'=>'registration',
+		'name'=>'registration',
+	),
+	3=>array(
+		'parent'=>0,
+		'label'=>'Eventerstellung',
+		'template'=>'home',
+		'file'=>'registration',
+		'name'=>'eventerstellung',
+	),
+	4=>array(
+		'parent'=>0,
+		'label'=>'XY',
+		'template'=>'home',
+		'file'=>'test',
+		'name'=>'xy',
 	),
 );
 ?>

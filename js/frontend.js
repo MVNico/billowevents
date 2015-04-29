@@ -49,6 +49,42 @@ $().ready(function(){
 			}
 		}
 	});
+	$('#comment-form').validate({
+		rules: {			
+			comment: {
+				required: true,
+				minlength: 2
+			}
+		}
+	});
+	$('#adduser-form').validate({
+		rules: {			
+			name: {
+				minlength: 2
+			},
+			lastname: {
+				minlength: 2
+			}
+		}
+	});
+	$('#event-form').validate({
+		rules: {			
+			title: {
+				required: true,
+				minlength: 2
+			},
+			description: {
+				minlength: 2
+			},
+			start: {
+				required: true
+			},
+			end: {
+				required: true
+			}
+		}
+	});
+	
 	/* Erstellt automatisch ein Benutzernamen aus dem bereits eingegeben Vor- und Nachnamen */
 	$("#username").focus(function(){
 		var firstname = $("#firstname").val();

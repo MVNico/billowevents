@@ -9,8 +9,8 @@
 
 <!-- Bootstrap -->
 <!--     <link href="css/bootstrap.min.css" rel="stylesheet"> -->
-		<link href="css/frontend.css" rel="stylesheet">
-    <script src="js/comp_frontend.js"></script>
+	<link href="<?php echo DOCFOLDER;?>css/frontend.css" rel="stylesheet">
+    <script src="<?php echo DOCFOLDER;?>js/comp_frontend.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

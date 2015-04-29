@@ -1,0 +1,28 @@
+$db = new DBConnect('192.168.0.1', 'DBUser', 'PW', 'DB','de','latin1'); Beispiel für Objekterstellung
+
+			$db->table('USER');
+			$db->where('VORNAME=?', array('Tim');
+			$res = $db->select();
+			foreach ($res['result'] as $v){
+				blabla
+			}
+			
+			$db->table('ITEMS');
+			$db->where('USER_ID=? AND EVENT_ID=?', array($userid, $eventid)));
+			$db->delete();
+			
+			
+			$arr_insert_val = array(
+					'EVENT_ID'=> $this->getParams('eventid'),
+					'USER_ID'=> $this->getParams('user_id')
+			);
+			$db->table('EVENTS');
+			$db->insert($arr_insert_val);
+			
+			
+			$this->_db->table('ITEMS');
+			$this->_db->where('user_id=?',array($params['userdel']));
+			$this->_db->join(ITEMS_EVENTS, 
+					ITEMS.'item_id='.ITEMS_EVENTS.'.item_id'
+					);
+			$this->_db->delete();

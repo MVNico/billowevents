@@ -15,6 +15,8 @@
     	          'bower_components/bootstrap/dist/js/bootstrap.js',
     	          'bower_components/jquery-validation/dist/jquery.validate.js',
     	          'bower_components/jquery-validation/src/localization/messages_de.js',
+    	          'bower_components/moment/min/moment.min.js',
+    	          'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
     	          'js/frontend.js'
     	        ],
     	        dest: 'js/comp_frontend.js',
@@ -24,6 +26,8 @@
     	          'bower_components/jquery/dist/jquery.js',
     	          'bower_components/bootstrap/dist/js/bootstrap.js',    	          
     	          'bower_components/jquery-validation/dist/jquery.validate.min.js',
+    	          'bower_components/moment/min/moment-with-locales.min.js',
+    	          'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
     	          'js/backend.js'
     	        ],
     	        dest: 'js/comp_backend.js',
@@ -32,7 +36,7 @@
 	    less: {
         	development: {
                 options: {
-                  compress: true,  //minifying the result
+                  compress: false,  //minifying the result
                 },
                 files: {
                   //compiling frontend.less into frontend.css

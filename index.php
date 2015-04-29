@@ -17,12 +17,8 @@ session_start();
 	
 	// Erstellen eines Menüs & aktuellen Seitencontent bestimmen
 	$objMenu 	= new Menu($arrMenu, $seite);
-	$file		= $objMenu->get_activePage('file');
+	$template	= $objMenu->get_activePage('template');
 	$activePage = $objMenu->get_activePage();
 	
-// 	xDebug($seite);
-// 	xDebug($file);
-// 	xDebug($activePage);
-	
-	include(TEMPLATE_PATH.'/'.$file.'.php');
+	include(TEMPLATE_PATH.'/'.$template.'.php');
 ?>

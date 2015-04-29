@@ -53,8 +53,8 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="submit"></label>
 	  <div class="col-md-8">
-	    <button id="login_btn" name="login_btn" class="btn btn-success">Login</button>
-	    <button id="register_btn" name="register_btn" class="btn btn-success">Registrieren</button>
+	    <button id="submit" name="submit" class="btn btn-success">Login</button>
+	    <button id="register" name="register" class="btn btn-success">Registrieren</button>
 	  </div>
 	</div>
 	</fieldset>

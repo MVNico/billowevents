@@ -3,7 +3,7 @@
 function createMenu($einsprungspunkt, $level, $activePage)
 {
 	$strMenu = "";
-	$strMenu .= '<ul class="level_'.$level.'">';
+	$strMenu .= '<ul class="nav navbar-nav level_'.$level.'">';
 
 	if (isset($einsprungspunkt) && !empty($einsprungspunkt))
 	{
