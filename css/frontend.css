@@ -6934,3 +6934,6 @@ label.error {
   padding: 2px 8px;
   margin-top: 2px;
 }
+.navbar-right {
+  margin-right: 0px!important;
+}

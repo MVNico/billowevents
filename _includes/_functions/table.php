@@ -1,13 +1,12 @@
 <?php
 //Zur Menu-Erstellung mit Parent/Child Elementen (rekursiv)
-function createMenu($einsprungspunkt, $level, $activePage)
+function createTable($einsprungspunkt, $level, $activePage)
 {
 	$strMenu = "";
 	$strMenu .= '<ul class="nav navbar-nav level_'.$level.'">';
 
 	if (isset($einsprungspunkt) && !empty($einsprungspunkt))
 	{
-
 		foreach($einsprungspunkt as $k => $v)
 		{
 			if ($v['parent'] > 0 && $v['display'] == 'yes')

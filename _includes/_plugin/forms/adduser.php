@@ -5,8 +5,9 @@
 	   
 		$rules_array = array
 		(
-	        'name'=>array('type'=>'string',  'required'=>true, 'min'=>2, 'max'=>250, 'trim'=>true, 'special_chars'=>false),
-	        'lastname'=>array('type'=>'string',  'required'=>true, 'min'=>2, 'max'=>250, 'trim'=>true, 'special_chars'=>false),
+	        'name'=>array('type'=>'string',  'required'=>true, 'min'=>2, 'max'=>250, 'trim'=>true, 'special_chars'=>true),
+	        'lastname'=>array('type'=>'string',  'required'=>true, 'min'=>2, 'max'=>250, 'trim'=>true, 'special_chars'=>true),
+	        'email'=>array('type'=>'email',  'required'=>false, 'min'=>6, 'max'=>250, 'trim'=>true, 'special_chars'=>false),
          );
 		
 		$validate = new validation();
@@ -71,7 +72,6 @@
 	    <button id="submit" name="submit" class="btn btn-primary">Einladung versenden</button>
 	  </div>
 	</div>
-
 	</fieldset>
 </form>
 

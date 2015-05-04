@@ -1,36 +1,65 @@
 <?php 
-	include_once PARTIALS_PATH.'/header.php';
-	
+	include_once PARTIALS_PATH.'/header.php';	
 	$Menu = $objMenu->get_arrMenu();
+	include_once PARTIALS_PATH.'/topmenu.php';
+
 ?>
-	<nav role="navigation" class="navbar navbar-default">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="home" class="navbar-brand">Billow-Events</a>
-        </div>
-        <div id="navbarCollapse" class="collapse navbar-collapse">
-        <?php echo createMenu($Menu[0]['child'], '1', $activePage);?>
-        </div>
-        <div class="clear"></div>
         
-        <div class="container-fluid">
+<div class="container-fluid">
 		  <div class="row">
-			  <div class="col-md-4">Menu mit Events und Notizen</div>
-			  <div class="col-md-8">Formulare und Grids für die Events</div>
+			  <div class="col-md-4">
+			  	<table class="table">
+				  	<thead>
+					  	<th>#</th>
+					  	<th>Blub</th>
+					  	<th>asdsd</th>
+					  	<th>asdsd</th>
+				  	</thead>
+				  	<tbody>
+					  	<tr class="active">
+					  		<th scope="row">1</th>
+					  		<td>blub</td>
+					  		<td>blub</td>
+					  		<td>blub</td>
+					  	</tr>
+						<tr class="success">
+					  		<th scope="row">2</th>
+							<td>bla</td>
+							<td>bla</td>
+							<td>bla</td>
+						</tr>
+						<tr class="warning">
+					  		<th scope="row">3</th>
+					  		<td>bli</td>
+							<td>bli</td>
+							<td>bli</td>
+						</tr>
+						<tr class="danger">
+						<th scope="row">4</th>
+					  		<td>bli</td>
+							<td>bli</td>
+							<td>bli</td>
+						</tr>
+						<tr class="info">
+						<th scope="row">5</th>
+					  		<td>bli</td>
+							<td>bli</td>
+							<td>bli</td>
+						</tr></tr>
+				  	</tbody>
+				</table>
 			</div>
-		</div>
+		  <div class="col-md-8">
 <?php
 	/* Hier dann die DB Verbindung für den Content der Seite*/
 	
 	$file = $objMenu->get_activePage('file');
 	
-	include(FILE_PATH.'/'.$file.'.php'); 
-	
+	include(FILE_PATH.'/'.$file.'.php');
+?>
+			</div>
+		</div>
+</div>
+<?php
 	include_once PARTIALS_PATH.'/footer.php';
 ?>
