@@ -8,6 +8,16 @@
 <div class="container-fluid">
 		  <div class="row">
 			  <div class="col-md-4">
+			  
+			<?php
+			 
+			/*
+			 * Hier darfst du dann dein Kram reinschreiben : ) dann bastel ich daraus mal eine Anzeige aus allen Events eines Nutzers 
+			 * 
+			 * 
+			 * */
+			
+			?>
 			  	<table class="table">
 				  	<thead>
 					  	<th>#</th>
