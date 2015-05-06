@@ -20,6 +20,13 @@
 		
 		if(sizeof($validate->errors) > 0)
 		{
+			/*
+			 * 	Wenn keine Fehler vorliegen, kannst du die Werte aus den bereinigten Eingabewerten in die DB schreiben
+			 *
+			 *  $res = $validate->santized;
+			 *  $res['firstname'] wäre in diesem Fall der String mit dem Vornamen
+			 *
+			 * */
 			xDebug($validate->errors);
 		}
 		

@@ -1,5 +1,4 @@
 <?php
-
 class validation{
 
     /*
@@ -434,7 +433,7 @@ class validation{
         }
     }
     
-    private function validateDate($date, $format = 'Y-m-d H:i:s')
+//     private function validateDate($date, $format = 'Y-m-d H:i:s')
 
     ########## SANITIZING METHODS ############
     

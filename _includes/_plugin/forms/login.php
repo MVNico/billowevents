@@ -21,9 +21,15 @@
 		
 		if(sizeof($validate->errors) > 0)
 		{
-			/* Query mit Abfrage, ob der User vorhanden ist*/
+			/*
+			 * 	Wenn keine Fehler vorliegen, fragst du hier die DB nach dem Usernamen mit PW ab 
+			 *  
+			 * 	Wenn es den User gibt, dann $_SESSION['user'] = $user_id setzen ( oder Username )
+			 * 
+			 * 
+			 * */
 			
-			/* Wenn ja, dann $_SESSION['user'] = $user_id setzen ( oder Username )*/
+			/* Dieser Teil müsste dann umgearbeitet werden */
 			if(!empty($res)){
 				$_SESSION['user'] = $res['id'];
 				header('location:home');

@@ -7,7 +7,6 @@
 		(
 	        'comment'=>array('type'=>'string',  'required'=>true, 'min'=>5, 'max'=>250, 'trim'=>true, 'special_chars'=>false),
          );
-		
 		$validate = new validation();
 		$validate->addSource($_POST);
 		$validate->AddRules($rules_array);
@@ -15,6 +14,14 @@
 		
 		if(sizeof($validate->errors) > 0)
 		{
+			
+			/*
+			 * 	Wenn keine Fehler vorliegen, kannst du die Werte aus den bereinigten Eingabewerten in die DB schreiben
+			 *  
+			 *  $res = $validate->santized;
+			 *  $res['comment'] wäre in diesem Fall der String mit dem Kommentar
+			 * 
+			 * */
 			xDebug($validate->errors, 'Fehler');
 		}
 		

@@ -1,6 +1,5 @@
 <?php 
 	include_once PARTIALS_PATH.'/header.php';	
-	$Menu = $objMenu->get_arrMenu();
 	include_once PARTIALS_PATH.'/topmenu.php';
 ?>
 

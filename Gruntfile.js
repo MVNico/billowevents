@@ -17,9 +17,9 @@
     	          'bower_components/jquery-validation/src/localization/messages_de.js',
     	          'bower_components/moment/min/moment.min.js',
     	          'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-    	          'js/frontend.js'
+    	          'js/own_frontend.js'
     	        ],
-    	        dest: 'js/comp_frontend.js',
+    	        dest: 'js/frontend.js',
     	      },
     	      js_backend: {
     	        src: [
@@ -28,15 +28,15 @@
     	          'bower_components/jquery-validation/dist/jquery.validate.min.js',
     	          'bower_components/moment/min/moment-with-locales.min.js',
     	          'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-    	          'js/backend.js'
+    	          'js/own_backend.js'
     	        ],
-    	        dest: 'js/comp_backend.js',
+    	        dest: 'js/backend.js',
     	      },
     	    },
 	    less: {
         	development: {
                 options: {
-                  compress: false,  //minifying the result
+                  compress: true,  //minifying the result
                 },
                 files: {
                   //compiling frontend.less into frontend.css
@@ -50,26 +50,25 @@
             options: {
               mangle: false  // Use if you want the names of your functions and variables unchanged
             },
-            frontend: {
-              files: {
-            	  './html/js/frontend.js': './public/assets/javascript/frontend.js',
-              }
-            },
-            backend: {
-              files: {
-                './public/assets/javascript/backend.js': './public/assets/javascript/backend.js',
-              }
-            },
+           min_frontend: {
+        	   files: {
+        		   "js/min_frontend.js":["js/frontend.js"]
+        	   	}
+    	   }
           },
         phpunit: {
           //...
         },
         watch: {
           //...
-        	src: {
-        		files: ['js/frontend.js'],
-        		tasks: ['concat']
-        	}
+        	js: {
+        		files: ['js/own_frontend.js'],
+        		tasks: ['concat', 'uglify']
+        	},
+	        less: {
+	        	files: ['stylesheets/frontend.less'],
+	        	tasks: ['less']
+	        }
         }
       });
 
@@ -80,6 +79,6 @@
       grunt.loadNpmTasks('grunt-contrib-watch');
     // Task definition
       //default
-      	grunt.registerTask('default', ['less', 'concat']);
+      	grunt.registerTask('default', ['less', 'concat', 'uglify']);
 
   };
