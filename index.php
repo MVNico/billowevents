@@ -4,9 +4,7 @@ session_start();
 	define('DOCFOLDER','/');
 	define('DOCROOT',realpath(dirname(__FILE__).'/'));
 	
-// 	include (CLASSES_PATH,'');
 	include (DOCFOLDER.'_includes/config.php');
-// 	include (INCLUDE_PATH.'/dbconnect.php');
 	include (FUNCTIONS_PATH.'/autoload.php');
 	include (FUNCTIONS_PATH.'/debug.php');
 	include (FUNCTIONS_PATH.'/menu.php');

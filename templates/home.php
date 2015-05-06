@@ -1,10 +1,13 @@
 <?php 
 	include_once PARTIALS_PATH.'/header.php';	
 	include_once PARTIALS_PATH.'/topmenu.php';
+	include_once PARTIALS_PATH.'/submenu.php';
+	
 ?>
 
 
 <div class="container-fluid">
+
 		  <div class="row">
 			  <div class="col-md-2"></div>
 			  <div class="col-md-8">

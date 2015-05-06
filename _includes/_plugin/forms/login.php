@@ -1,13 +1,7 @@
 <?php
 
 	if(isset($_POST['submit'])){
-		
-		
-		/* TEST ohne DB-USER-CHECK */
-	   $_SESSION['user'] = '1234';
-		header('location:home');
-	   
-		
+	   		
 		$rules_array = array
 		(
 	        'login_name'=>array('type'=>'string',  'required'=>true, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>true),
@@ -27,19 +21,24 @@
 			 * 	Wenn es den User gibt, dann $_SESSION['user'] = $user_id setzen ( oder Username )
 			 * 
 			 * 
+			 * Dieser Teil müsste dann umgearbeitet werden 
+			 * 
+			 * 
 			 * */
 			
-			/* Dieser Teil müsste dann umgearbeitet werden */
+			$whereclause = ["U_Email" => $validate->sanitized['login_name'], "U_PW" => $validate->sanitized['login_password']];
+			
+			
 			if(!empty($res)){
 				$_SESSION['user'] = $res['id'];
 				header('location:home');
 			}
 			
-			xDebug($validate->errors);
+			xDebug($validate->errors, 'Fehler' );
 		}
 		
 		/*** show the array of validated and sanitized variables ***/
-		xDebug($validate->sanitized);
+		xDebug($validate->sanitized, 'Korrekt');
 	}
 	if(!isset($_SESSION['user'])){
 		echo 
