@@ -2,7 +2,7 @@ RewriteEngine on
 
 RewriteBase /
 
-# Kein Rewrite f�r folgende Dateitypen
+# Kein Rewrite für folgende Dateitypen
 RewriteRule \.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG|bmp|BMP|js|JS|css|CSS|swf|SWF|flv|FLV|mp4|ICO|ico|MP4|htc|HTC|eot|svg|ttf|woff|woff2)$ - [L]
 
 # Ist es die index.php dann Rewrite abbrechen

@@ -1,7 +1,10 @@
 <?php 
 	include_once PARTIALS_PATH.'/header.php';	
 	include_once PARTIALS_PATH.'/topmenu.php';
-	include_once PARTIALS_PATH.'/submenu.php';
+	
+	if (isset($_SESSION['user'])){
+		include_once PARTIALS_PATH.'/submenu.php';		
+	}
 	
 ?>
 

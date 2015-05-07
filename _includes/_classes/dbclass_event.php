@@ -18,10 +18,10 @@
 				$E_U_Creator = NULL
 		;
 			
-		public function __construct()
+		/*public function __construct()
 		{
 			$this->_columns = ['E_ID','E_Beschreibung','E_Ueberschrift','E_Datevon','E_Datebis','E_TimeVon','E_TimeBis','E_Ort','E_Sichtbarkeit','E_U_Creator'];
-		}
+		}*/
 		
 		/*
 			Select Eventcomments von Event
@@ -30,7 +30,11 @@
 		
 		public function getEventcomments()
 		{
-			$eventcomments = $this->select("B_EventComments",array("EK_E_ID" => $this->E_ID), FALSE, FALSE, NULL); //JOIN?
+			$table = "B_EventComments";
+			$columns = $this->getColumns($table);
+			$where = array("EK_E_ID" => $this->U_ID);
+			$eventcomments = $this->select($table,$columns,$where, NULL);//JOIN ?
+
 			return $eventcomments;
 		}
 		
@@ -41,7 +45,7 @@
 		
 		public function getItems()
 		{
-			$items = $this->select("B_Itemlist",array("I_E_ID" => $this->E_ID), FALSE, FALSE, NULL);
+			$items = $this->select("B_Itemlist",NULL,array("I_E_ID" => $this->E_ID), NULL);
 			return $items;
 		}
 		
@@ -52,9 +56,10 @@
 		
 		public function getGaeste()
 		{
-			$gaeste = $this->select("B_GaesteListe",array("GL_E_ID" => $this->E_ID), FALSE, FALSE, NULL);//JOIN wegen usernamen
+			$gaeste = $this->select("B_GaesteListe",NULL,array("GL_E_ID" => $this->E_ID), NULL);//JOIN wegen usernamen
 			return $gaeste;
 		}
+		
 	}
 
 ?>

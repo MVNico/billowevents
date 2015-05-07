@@ -19,9 +19,28 @@
 				$U_Visibility = NULL
 		;
 		
-		public function __construct()
+		/*public function __construct()
 		{
 			$this->_columns = ['U_ID','U_Anzeigename','U_PW','U_Email','U_Name','U_Vorname','U_Strase','U_HausNr','U_Plz','U_Ort','U_Visibility'];
+		}*/
+		/*
+			Überprüft ob User existiert. Gibt User-ID zurück, falls er existiert, sonst 0.
+		*/
+		public function userExists($whereclause){
+			$_userexists = 0;
+			$database = $this->getDatabase();
+			$tets = $database->select($this->_tablename,["U_ID"],$whereclause);
+			
+			if(count($tets) == 1){
+				$_userexists = $tets[0];
+			}
+			
+			if($database->error()[0] != "00000"){
+				var_dump($database->error());
+			}
+			
+			return $_userexists;
+			
 		}
 		
 		/*
@@ -31,7 +50,10 @@
 		
 		public function getFriends()
 		{
-			$friends = $this->select("B_FriendList",array("F_U_ID" => $this->U_ID), FALSE, FALSE, NULL); //JOIN! wegen namen
+			$table = "B_FriendList";
+			$columns = $this->getColumns($table);
+			$where = array("F_U_ID" => $this->U_ID);
+			$friends = $this->select($table,$columns,$where, NULL);//JOIN einfügen? wgen namen
 			return $friends;
 		}
 		
@@ -42,7 +64,10 @@
 		
 		public function getEvents()
 		{
-			$events = $this->select("B_Event",array("E_U_Creator" => $this->U_ID), FALSE, FALSE, NULL);
+			$table = "B_Event";
+			$columns = $this->getColumns($table);
+			$where = array("E_U_Creator" => $this->U_ID);
+			$events = $this->select($table,$columns,$where, NULL);
 			return $events;
 		}
 		
@@ -53,7 +78,10 @@
 		
 		public function getNotizen()
 		{
-			$notizen = $this->select("B_Notizen",array("N_U_ID" => $this->U_ID), FALSE, FALSE, NULL);
+			$table = "B_Notizen";
+			$columns = $this->getColumns($table);
+			$where = array("N_U_ID" => $this->U_ID);
+			$notizen = $this->select($table,$columns,$where, NULL);
 			return $notizen;
 		}
 	}

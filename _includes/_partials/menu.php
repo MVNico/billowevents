@@ -9,7 +9,7 @@
 $arrMenu = array(
 	1=>array(
 		'parent'=>0,
-		'label'=>'Profil',
+		'label'=>'Home',
 		'template'=>'home',
 		'file'=>'login',
 		'name'=>'home',
@@ -41,11 +41,35 @@ $arrMenu = array(
 	),
 	5=>array(
 		'parent'=>0,
-		'label'=>'Test',
+		'label'=>'Freundesliste',
 		'template'=>'home',
+		'file'=>'friendlist',
+		'name'=>'friendlist',
+		'display' =>'none',
+	),
+	6=>array(
+		'parent'=>0,
+		'label'=>'Übersicht',
+		'template'=>'event',
 		'file'=>'test',
-		'name'=>'test',
-		'display' =>'yes',
+		'name'=>'overview',
+		'display' =>'none',
+	),
+	7=>array(
+		'parent'=>0,
+		'label'=>'Notiz',
+		'template'=>'home',
+		'file'=>'note',
+		'name'=>'note',
+		'display' =>'none',
+	),
+	8=>array(
+		'parent'=>0,
+		'label'=>'Wunschliste',
+		'template'=>'home',
+		'file'=>'wishlist',
+		'name'=>'wishlist',
+		'display' =>'none',
 	),
 );
 ?>

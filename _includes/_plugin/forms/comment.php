@@ -22,6 +22,16 @@
 			 *  $res['comment'] wäre in diesem Fall der String mit dem Kommentar
 			 * 
 			 * */
+			 
+			//kristian start
+// 			$db_eventcomment = new dbclass_eventcomments();
+// 			/*
+// 				Bin ich mit eventcomments richtig? ;) ODer sind das Itemcomments?
+// 				Wie komme ich an globale variablen oder cookies? weil man die für die Event-ID braucht. Oder kannst du ein hidden field mit der Event-ID oder so mitschicken?
+// 			*/
+// 			$inservalues = ["EK_ID" => $db_eventcomment->getGUID(),"EK_E_ID" => "","EK_U_ID" => $_SESSION['user'],"EK_Kommentar" => $res['comment'],"EK_Date" => date('Y-m-d')]
+// 			$insert_eventcomment = $db_eventcomment->insert($inservalues);
+			//kristian ende
 			xDebug($validate->errors, 'Fehler');
 		}
 		

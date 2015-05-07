@@ -8,7 +8,9 @@
   },
   "keywords": [
     "Bootstrap",
-    "Grunt"
+    "Grunt",
+    "Bower",
+    "Medoo"
   ],
   "author": "Nico N.",
   "license": "ISC",

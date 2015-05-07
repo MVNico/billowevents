@@ -84,6 +84,14 @@ $().ready(function(){
 			}
 		}
 	});
+	$('#note-form').validate({
+		rules: {			
+			title: {
+				required: true,
+				minlength: 2
+			}
+		}
+	});
 	
 	/* Erstellt automatisch ein Benutzernamen aus dem bereits eingegeben Vor- und Nachnamen */
 	$("#username").focus(function(){

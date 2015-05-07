@@ -1,4 +1,26 @@
 <?php
+
+	$DatenAusDB = array(
+			'firstname' => '',
+			'lastname' => '',
+			'username' => '',
+			'email' => ''
+	);
+if (isset($_SESSION['user'])){
+	/*
+	 * 		DB Abfrage nach dieser Userid / Eventid
+	 * 		Damit diese Werte beim Editieren eingefügt werden können
+	 *
+	 *  */
+
+	$DatenAusDB = array(
+			'firstname' => 'Hans',
+			'lastname' => 'Peter',
+			'username' => 'Hans.Peter',
+			'email' => 'blub@blub.de'
+	);
+}
+
 	if(isset($_POST['submit'])){
 		
 		xDebug($_POST);
@@ -27,6 +49,14 @@
 			 *  $res['firstname'] wäre in diesem Fall der String mit dem Vornamen
 			 *
 			 * */
+			 //kristian start
+// 			 $db_user = new dbclass_user();
+// 			 /*
+// 				DB Bild vom Phil zeigt an, dass PW's nur als bigint gespeichert werden können. ist die Validierung auch danach?
+// 			 */
+// 			 $insertvalues = ["U_ID" => $db_user->getGUID(),"U_AnzeigeName" => $res["username"],"U_PW" => $res["password"],"U_Email" => $res["email"],"U_Vorname" => $res["firstname"],"U_Name" => $res["lastname"]];
+// 			 $insertevent = $db_user->insert($inservalues);
+			 //kristian end
 			xDebug($validate->errors);
 		}
 		
@@ -47,7 +77,7 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="firstname">firstname</label>  
 	  <div class="col-md-4">
-	  <input id="firstname" name="firstname" placeholder="firstname" class="form-control input-md" type="text">
+	  <input value="<?php echo $DatenAusDB['firstname']; ?>" id="firstname" name="firstname" placeholder="firstname" class="form-control input-md" type="text">
 	    
 	  </div>
 	</div>
@@ -56,7 +86,7 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="lastname">lastname</label>  
 	  <div class="col-md-4">
-	  <input id="lastname" name="lastname" placeholder="lastname" class="form-control input-md" type="text">
+	  <input value="<?php echo $DatenAusDB['lastname']; ?>" id="lastname" name="lastname" placeholder="lastname" class="form-control input-md" type="text">
 	    
 	  </div>
 	</div>
@@ -65,7 +95,7 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="username">username</label>  
 	  <div class="col-md-4">
-	  <input id="username" name="username" placeholder="username" class="form-control input-md" type="text">
+	  <input value="<?php echo $DatenAusDB['username']; ?>" id="username" name="username" placeholder="username" class="form-control input-md" type="text">
 	    
 	  </div>
 	</div>
@@ -74,7 +104,7 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="email">Email</label>  
 	  <div class="col-md-4">
-	  <input id="email" name="email" placeholder="Email" class="form-control input-md">
+	  <input value="<?php echo $DatenAusDB['email']; ?>" id="email" name="email" placeholder="Email" class="form-control input-md">
 	    
 	  </div>
 	</div>
@@ -114,7 +144,7 @@
 	  <label class="col-md-4 control-label" for="submit"></label>
 	  <div class="col-md-8">
 	    <button id="submit" name="submit" class="btn btn-success">Submit</button>
-	    <button id="cancle" name="cancle" class="btn btn-danger">Cancle</button>
+	    <button id="cancle" name="cancle" class="btn btn-danger">Cancel</button>
 	  </div>
 	</div>
 	

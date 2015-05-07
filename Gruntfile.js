@@ -15,7 +15,7 @@
     	          'bower_components/bootstrap/dist/js/bootstrap.js',
     	          'bower_components/jquery-validation/dist/jquery.validate.js',
     	          'bower_components/jquery-validation/src/localization/messages_de.js',
-    	          'bower_components/moment/min/moment.min.js',
+    	          'bower_components/moment/min/moment-with-locales.min.js',
     	          'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
     	          'js/own_frontend.js'
     	        ],
@@ -48,7 +48,7 @@
         },
         uglify: {
             options: {
-              mangle: false  // Use if you want the names of your functions and variables unchanged
+              mangle: false
             },
            min_frontend: {
         	   files: {

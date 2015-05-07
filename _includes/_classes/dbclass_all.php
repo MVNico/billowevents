@@ -3,9 +3,20 @@
 	class dbclass_all{
 		
 		private 
-				$_database = NULL;
+				$_database = NULL;//Variable für Datenbank. Wird in getDatabase gefüllt, falls erste Initialisierung. Damit nur eine Medoo-Klasse herumgurkt
 		
-		private function getDatabase()
+		/*
+			Spalten der Klasse angeben
+		*/
+		public function __construct()
+		{
+			$this->_columns = $this->getColumns($this->_tablename);
+		}
+		
+		/*
+			Datenbankklasse holen
+		*/
+		protected function getDatabase()
 		{
 			if($this->_database == NULL)
 			{
@@ -26,41 +37,47 @@
 			
 			return $db;
 		}
-		/*	nico.neumann@multivisio.de
+
+		/*	
 			Update Funktion:
 			$where = whereclause im select befehl
 			$single = holt nur ersten Record aus der Tabelle
 			$exists = schaut nach ob Eintrag vorhanden -> gut für PW-Validation. Laut Medoo am Schnellsten.
 			$join = JOIN-Tabellen !!fehlt noch!!
 		*/
-		public function select($table = NULL, $where = NULL, $single = false, $exists = false, $join = NULL)
+		public function select($table = NULL, $columns = NULL, $where = NULL, $join = NULL)
 		{
 			$database = $this->getDatabase();
+			
+			if($table == NULL){
+				$table = $this->_tablename;
+			}
+			
+			if($columns == NULL){
+				$columns = $this->_columns;
+			}
 			
 			$whereclause = array();
 			if($where != NULL){
 				$whereclause = $where;
 			}
-			if($table == NULL){
-				$table = $this->_tablename;
-			}
-
+			
 			if($join == NULL){
-				if($single){
-					$tets = $database->get($table,$this->_columns,$whereclause);
-					$this->setClassvar($tets);
-				}
-				elseif($exists AND $where != NULL){
-					$tets = $database->has($table,$whereclause);
-				}
-				else{
-					$tets = $database->select($table,$this->_columns,$whereclause);
+				$tets = $database->select($table,$columns,$whereclause);
+				//Falls nur ein Eintrag und Klassentabelle ungleich Abfragetabelle, muss es sich um eine ID-Abfrage (= z.B. User loggt sich ein) handeln
+				if($table == $this->_tablename && count($tets) == 1){
+					$this->setClassvar($tets[0]);
 				}
 			}
 			else{
-				
+				//hier kommen noch die JOIN-Abfragen rein (falls gebraucht)
 			}
-			//error einbauen?
+			
+			//kleine Errormessage, falls Datenbankfehler
+			if($database->error()[0] != "00000"){
+				var_dump($database->error());
+			}
+
 			return $tets;
 			
 		}
@@ -77,7 +94,12 @@
 			$database = $this->getDatabase();
 			
 			$update = $database->update($this->_tablename,$_updatevalues,$_whereclause);
-			//error einbauen?
+			
+			//kleine Errormessage, falls Datenbankfehler
+			if($database->error()[0] != "00000"){
+				var_dump($database->error());
+			}
+			
 			return $update;
 		}
 		
@@ -92,7 +114,12 @@
 			$database = $this->getDatabase();
 			
 			$insert = $database->insert($this->_tablename,$_insertvalues);
-			//error einbauen?
+			
+			//kleine Errormessage, falls Datenbankfehler
+			if($database->error()[0] != "00000"){
+				var_dump($database->error());
+			}
+			
 			return $insert;
 		}
 		
@@ -106,8 +133,15 @@
 		public function delete($_whereclause)
 		{
 			$database = $this->getDatabase();
-			//error einbauen?
+			$delete = 0;
 			//$delete = $database->delete($this->_tablename,$_whereclause)
+			
+			//kleine Errormessage, falls Datenbankfehler
+			if($database->error()[0] != "00000"){
+				var_dump($database->error());
+			}
+			
+			return $delete;
 		}
 		
 		/*
@@ -115,7 +149,6 @@
 			$_ccolumn = Name der Variable
 			$_value = der zu setzende Wert
 		*/
-		
 		public function setvar($_ccolumn,$_value)
 		{
 			$this->$_ccolumn = $_value;
@@ -131,7 +164,7 @@
 			return $this->$_scolumn;
 		}
 		
-		//alle Spalten der DB (in __construct aufgeführt) bekommen
+		//alle Spalten der DB (in getColumns aufgeführt) bekommen
 		public function getAllColumns()
 		{
 			return $this->_columns;
@@ -156,14 +189,49 @@
 			}
 		}
 		
-		//Klassenvariablen füllen bei single objekten
-		// TESTEN!
+		//Klassenvariablen füllen
 		public function setClassvar($aSelect)
 		{
 			foreach($this->_columns as $cc)
 			{
 				$this->setvar($cc,$aSelect[$cc]);
 			}
+		}
+		
+		//Liste aller Spalten der Datenbank
+		public function getColumns($table)
+		{
+			switch($table){
+				case "B_User":
+					$columns = ['U_ID','U_Anzeigename','U_PW','U_Email','U_Name','U_Vorname','U_Strase','U_HausNr','U_Plz','U_Ort','U_Visibility'];
+					break;
+				case "B_Event":
+					$columns = ['E_ID','E_Beschreibung','E_Ueberschrift','E_Datevon','E_Datebis','E_TimeVon','E_TimeBis','E_Ort','E_Sichtbarkeit','E_U_Creator'];
+					break;
+				case "B_EventComments":
+					$columns = ['EK_ID','EK_E_ID','EK_U_ID','EK_Kommentar','EK_Date'];
+					break;
+				case "B_Gaesteliste":
+					$columns = ['GL_E_ID','GL_U_ID','GL_TeilnehmerStatus'];
+					break;
+				case "B_ItemList":
+					$columns = ['I_ID','I_Name','I_Bedarfmenge','I_CurrMenge','I_Url','I_Zusatz','I_Visibility','I_E_ID','I_U_ID'];
+					break;
+				case "B_ItemHolder":
+					$columns = ['IB_ID','IB_I_ID','IB_U_ID','IB_Anzahl'];
+					break;
+				case "B_ItemComments":
+					$columns = ['IC_ID','IC_I_ID','IC_U_ID','IC_Comment','IC_DateTime'];
+					break;
+				case "B_Notizen":
+					$columns = ['N_ID','N_Beschreibung','N_Text','N_U_ID'];
+					break;
+				case "B_Friendlist":
+					$columns = ['F_U_ID','F_U_ID_F','F_Status'];
+					break;
+			}
+			
+			return $columns;
 		}
 		
 	}

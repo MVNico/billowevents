@@ -23,6 +23,12 @@
 			 *  $res['name'] wäre in diesem Fall der String mit dem Namen des Users
 			 * 
 			 * */
+			 
+			 //kristian start
+			 //hier muss nix mit DB rein. Man versendet doch nur eine Email an Person xy? Anmelden muss er sich selbst ... :S
+			 // = ich verstehe nicht ganz wo hier eingefügt werden soll
+			 //kristian ende
+			 
 			xDebug($validate->errors);
 		}
 		

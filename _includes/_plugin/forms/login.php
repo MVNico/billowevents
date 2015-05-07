@@ -1,5 +1,5 @@
 <?php
-
+// xDebug($_POST);
 	if(isset($_POST['submit'])){
 	   		
 		$rules_array = array
@@ -13,32 +13,15 @@
 		$validate->AddRules($rules_array);
 		$validate->run();
 		
-		if(sizeof($validate->errors) > 0)
+		if(sizeof($validate->errors) == 0)
 		{
-			/*
-			 * 	Wenn keine Fehler vorliegen, fragst du hier die DB nach dem Usernamen mit PW ab 
-			 *  
-			 * 	Wenn es den User gibt, dann $_SESSION['user'] = $user_id setzen ( oder Username )
-			 * 
-			 * 
-			 * Dieser Teil müsste dann umgearbeitet werden 
-			 * 
-			 * 
-			 * */
-			
-			$whereclause = ["U_Email" => $validate->sanitized['login_name'], "U_PW" => $validate->sanitized['login_password']];
-			
-			
-			if(!empty($res)){
-				$_SESSION['user'] = $res['id'];
-				header('location:home');
-			}
-			
-			xDebug($validate->errors, 'Fehler' );
+			$_SESSION['user'] = '1';
+			header('location:overview');
 		}
+// 			xDebug($validate->errors, 'Fehler' );
 		
 		/*** show the array of validated and sanitized variables ***/
-		xDebug($validate->sanitized, 'Korrekt');
+// 		xDebug($validate->sanitized, 'Korrekt');
 	}
 	if(!isset($_SESSION['user'])){
 		echo 
@@ -79,8 +62,7 @@
 	</form>
 HTML;
 	}else {
-		echo ' mit USER-WERTEN';
-		include_once PLUGIN_PATH.'\forms\registration.php';
+		header('location:overview');
 	}
 ?>
 

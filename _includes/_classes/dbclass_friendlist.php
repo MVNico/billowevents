@@ -11,10 +11,10 @@
 				$F_Status = NULL
 		;
 		
-		public function __construct()
+		/*public function __construct()
 		{
 			$this->_columns = ['F_U_ID','F_U_ID_F','F_Status'];
-		}
+		}*/
 	}
 
 ?>

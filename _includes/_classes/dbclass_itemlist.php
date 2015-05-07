@@ -17,10 +17,10 @@
 				$I_U_ID = NULL
 				;
 		
-		public function __construct()
+		/*public function __construct()
 		{
 			$this->_columns = ['I_ID','I_Name','I_Bedarfmenge','I_CurrMenge','I_Url','I_Zusatz','I_Visibility','I_E_ID','I_U_ID'];
-		}
+		}*/
 		
 		/*
 			Select Items von Event
@@ -29,7 +29,7 @@
 		
 		public function getItemcomments()
 		{
-			$itemcomments = $this->select("B_ItemComments",array("IC_I_ID" => $this->E_ID), FALSE, FALSE, NULL);
+			$itemcomments = $this->select("B_ItemComments",NULL,array("IC_I_ID" => $this->E_ID), NULL);
 			return $itemcomments;
 		}
 		

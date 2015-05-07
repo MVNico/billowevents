@@ -1,4 +1,25 @@
 <?php
+
+$DatenAusDB = array(
+		'title' => '',
+		'description' => '',
+		'datetime' => ''
+);
+if (isset($_GET['e_id'])){
+	/* 		
+	 * 		DB Abfrage nach dieser Userid / Eventid
+	 * 		Damit diese Werte beim Editieren eingefügt werden können
+	 *  
+	 *  */
+
+	$DatenAusDB = array(
+			'title' => 'blub',
+			'description' => 'more blub',
+			'start' => '05/07/2015 11:35 AM',
+			'end' => '05/07/2015 11:45 AM'
+	);
+}
+
 	if(isset($_POST['submit'])){
 		
 		xDebug($_POST);
@@ -16,15 +37,18 @@
 		$validate->AddRules($rules_array);
 		$validate->run();
 		
-		if(sizeof($validate->errors) > 0)
-		{
-			/*
-			 * 	Wenn keine Fehler vorliegen, kannst du die Werte aus den bereinigten Eingabewerten in die DB schreiben
-			 *
-			 *  $res = $validate->santized;
-			 *  $res['title'] wäre in diesem Fall der String mit dem Titel
-			 *
-			 * */
+		if(sizeof($validate->errors) == 0)
+		{	 
+			 //kristian start
+			 $db_event = new dbclass_event();
+// 			 /*
+// 				E_ID ist bei Phil so ein komisches Gerüst, daher mache ich das mit getGUID
+// 				start = DateVon oder TimeVon? 
+// 				end = DateBis oder TimeBis?
+// 			 */
+			 $insertvalues = array("E_ID" => $db_event->getGUID(),"E_Ueberschrift" => $validate->sanitized["title"],"E_Beschreibung" => $validate->sanitized["description"],"E_DateVon" => $validate->sanitized["start"],"E_DateBis" => $validate->sanitized["end"]);
+			 $insertevent = $db_event->insert($inservalues);
+			 //kristian ende
 			xDebug($validate->errors);
 		}
 		
@@ -42,7 +66,7 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="title">Name</label>  
 	  <div class="col-md-4">
-	  <input id="title" name="title" placeholder="Titel" class="form-control input-md" required="" type="text">
+	  <input value="<?php echo $DatenAusDB['title']; ?>" id="title" name="title" placeholder="Titel" class="form-control input-md" required="" type="text">
 	    
 	  </div>
 	</div>
@@ -51,7 +75,7 @@
 	<div class="form-group">
 	  <label class="col-md-4 control-label" for="description">Beschreibung</label>
 	  <div class="col-md-4">                     
-	    <textarea class="form-control" id="description" name="description"></textarea>
+	    <textarea class="form-control" id="description" name="description"><?php echo $DatenAusDB['description']; ?></textarea>
 	  </div>
 	</div>
 	
@@ -61,7 +85,7 @@
 	        <div class="form-group">
 	        <label class="col-md-4 control-label" for="datetimepicker1">Startzeit</label>  
 	            <div class='input-group date col-md-4' id='datetimepicker1'>
-	                <input type='text' class="form-control" id="start" />
+	                <input value="<?php echo $DatenAusDB['start']; ?>" type='text' class="form-control" id="start" />
 	                <span class="input-group-addon">
 	                    <span class="glyphicon glyphicon-calendar"></span>
 	                </span>
@@ -71,50 +95,21 @@
 	        <div class="form-group">
 	        <label class="col-md-4 control-label" for="datetimepicker2">Endzeit</label> 
 	            <div class='input-group date col-md-4' id='datetimepicker2'>
-	                <input type='text' class="form-control" id="end" />
+	                <input value="<?php echo $DatenAusDB['end']; ?>" type='text' class="form-control" id="end" />
 	                <span class="input-group-addon">
 	                    <span class="glyphicon glyphicon-calendar"></span>
 	                </span>
 	            </div>
 	        </div>
-
-
-
-
-
-	<!-- Select Multiple -->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="guestlist">Gästeliste</label>
-	  <div class="col-md-4">
-	    <select id="guestlist" name="guestlist" class="form-control" multiple="multiple">
-	    </select>
-	  </div>
-	</div>
 	
 	<!-- Button (Double) -->
 	<div class="form-group">
-	  <label class="col-md-4 control-label" for="guest_inv"></label>
-	  <div class="col-md-8">
-	    <button id="guest_inv" name="guest_inv" class="btn btn-info">Gast einladen</button>
-	    <button id="guest_kick" name="guest_kick" class="btn btn-info">Gast entfernen</button>
-	  </div>
-	</div>
-	
-	<!-- Select Multiple -->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="itemlist">Wunschliste</label>
-	  <div class="col-md-4">
-	    <select id="itemlist" name="itemlist" class="form-control" multiple="multiple">
-	    </select>
-	  </div>
-	</div>
-	
-	<!-- Button (Double) -->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="item_add"></label>
-	  <div class="col-md-8">
-	    <button id="item_add" name="item_add" class="btn btn-info">Wunsch hinzufügen</button>
-	    <button id="item_delete" name="item_delete" class="btn btn-info">Wunsch entfernen</button>
+	  <div class="col-md-12">
+		  <div class="col-md-4"></div>
+		  <div class="col-md-4">
+		    <a class="btn btn-info" href="/wishlist?e_id=1">Wunschliste bearbeiten</a>
+		    <a class="btn btn-info" href="#">Gästeliste bearbeiten</a>
+	    </div>
 	  </div>
 	</div>
 	
@@ -142,7 +137,7 @@
 	  <label class="col-md-4 control-label" for="submit"></label>
 	  <div class="col-md-8">
 	    <button id="submit" name="submit" class="btn btn-success">Speichern</button>
-	    <button id="cancel" name="cancel" class="btn btn-danger">Abbrechen</button>
+	    <button id="cancel" name="cancel" class="btn btn-warning">Abbrechen</button>
 	  </div>
 	</div>
 	
@@ -156,8 +151,12 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
+        $('#datetimepicker1').datetimepicker({
+			locale: 'de'
+            });
+        $('#datetimepicker2').datetimepicker({
+			locale: 'de'
+        });
         $("#datetimepicker1").on("dp.change", function (e) {
             $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
         });

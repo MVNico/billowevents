@@ -12,10 +12,10 @@
 				$IB_Anzahl = NULL
 				;
 		
-		public function __construct()
+		/*public function __construct()
 		{
 			$this->_columns = ['IB_ID','IB_I_ID','IB_U_ID','IB_Anzahl'];
-		}
+		}*/
 	}
 
 ?>
