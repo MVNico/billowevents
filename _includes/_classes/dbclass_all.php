@@ -18,6 +18,7 @@
 		*/
 		protected function getDatabase()
 		{
+			
 			if($this->_database == NULL)
 			{
 				$db = new medoo([
@@ -26,13 +27,19 @@
 					'server'=>'frozenbit.de',
 					'username'=>'BillowUser',
 					'password'=>'Fiae13BillowEvents',
-					'charset'=>'utf8'
+					'charset'=>'UTF-8'
 				]);
-				$_database = $db;
+				
+				//kleine Errormessage, falls Datenbankfehler
+				if($db->error()[0] != "00000"){
+					var_dump($db->error());
+				}
+				
+				$this->_database = $db;
 			}
 			else
 			{
-				$db = $_database;
+				$db = $this->_database;
 			}
 			
 			return $db;
@@ -45,7 +52,7 @@
 			$exists = schaut nach ob Eintrag vorhanden -> gut für PW-Validation. Laut Medoo am Schnellsten.
 			$join = JOIN-Tabellen !!fehlt noch!!
 		*/
-		public function select($table = NULL, $columns = NULL, $where = NULL, $join = NULL)
+		public function select($table = NULL, $columns = NULL, $where = NULL, $join = NULL, $single = false)
 		{
 			$database = $this->getDatabase();
 			
@@ -65,17 +72,22 @@
 			if($join == NULL){
 				$tets = $database->select($table,$columns,$whereclause);
 				//Falls nur ein Eintrag und Klassentabelle ungleich Abfragetabelle, muss es sich um eine ID-Abfrage (= z.B. User loggt sich ein) handeln
-				if($table == $this->_tablename && count($tets) == 1){
+				/*if($table == $this->_tablename && count($tets) == 1 && $single){
 					$this->setClassvar($tets[0]);
-				}
+				}*/
 			}
 			else{
+				$tets = $database->select($table,$join,$columns,$whereclause);
 				//hier kommen noch die JOIN-Abfragen rein (falls gebraucht)
 			}
 			
 			//kleine Errormessage, falls Datenbankfehler
 			if($database->error()[0] != "00000"){
 				var_dump($database->error());
+			}
+			
+			if($single && count($tets)){
+				$tets = $tets[0];
 			}
 
 			return $tets;
@@ -89,11 +101,11 @@
 			Liefert Anzahl veränderter Einträge zurück
 		*/
 		
-		public function update($_updatevalues,$_whereclause = NULL)
+		public function update($updatevalues,$whereclause)
 		{
 			$database = $this->getDatabase();
 			
-			$update = $database->update($this->_tablename,$_updatevalues,$_whereclause);
+			$update = $database->update($this->_tablename,$updatevalues,$whereclause);
 			
 			//kleine Errormessage, falls Datenbankfehler
 			if($database->error()[0] != "00000"){
@@ -126,22 +138,24 @@
 		/*
 			Funktion Delete
 			$_whereclause = whereclause im Delete befehl
-			Liefert anzahl gelöschter Elemente zurück
 			!!testen!!
 		*/
 		
-		public function delete($_whereclause)
+		public function delete($table=null,$whereclause)
 		{
 			$database = $this->getDatabase();
-			$delete = 0;
-			//$delete = $database->delete($this->_tablename,$_whereclause)
+			
+			if($table == null){
+				$table=$this->_tablename;
+			}
+			
+			$delete = $database->delete($table,$whereclause);
 			
 			//kleine Errormessage, falls Datenbankfehler
 			if($database->error()[0] != "00000"){
 				var_dump($database->error());
 			}
-			
-			return $delete;
+
 		}
 		
 		/*
@@ -211,8 +225,8 @@
 				case "B_EventComments":
 					$columns = ['EK_ID','EK_E_ID','EK_U_ID','EK_Kommentar','EK_Date'];
 					break;
-				case "B_Gaesteliste":
-					$columns = ['GL_E_ID','GL_U_ID','GL_TeilnehmerStatus'];
+				case "B_GaesteListe":
+					$columns = ['GL_E_ID','GL_U_ID','GL_TeilnahmeStatus'];
 					break;
 				case "B_ItemList":
 					$columns = ['I_ID','I_Name','I_Bedarfmenge','I_CurrMenge','I_Url','I_Zusatz','I_Visibility','I_E_ID','I_U_ID'];
@@ -226,7 +240,7 @@
 				case "B_Notizen":
 					$columns = ['N_ID','N_Beschreibung','N_Text','N_U_ID'];
 					break;
-				case "B_Friendlist":
+				case "B_FriendList":
 					$columns = ['F_U_ID','F_U_ID_F','F_Status'];
 					break;
 			}

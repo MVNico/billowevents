@@ -17,19 +17,18 @@
 				$I_U_ID = NULL
 				;
 		
-		/*public function __construct()
-		{
-			$this->_columns = ['I_ID','I_Name','I_Bedarfmenge','I_CurrMenge','I_Url','I_Zusatz','I_Visibility','I_E_ID','I_U_ID'];
-		}*/
-		
 		/*
 			Select Items von Event
-			!!Noch nicht getestet, nur Idee!!
 		*/
 		
-		public function getItemcomments()
+		public function getItemcomments($item)
 		{
-			$itemcomments = $this->select("B_ItemComments",NULL,array("IC_I_ID" => $this->E_ID), NULL);
+			$table = "B_ItemComments";
+			$columns = ["IC_Comment","IC_DateTime","U_AnzeigeName"];
+			$where = ["IC_I_ID" => $item];
+			$join = ["[>]B_User" => ["IC_U_ID" => "U_ID"]];
+			$itemcomments = $this->select($table,$columns,$where,$join,false);
+			
 			return $itemcomments;
 		}
 		

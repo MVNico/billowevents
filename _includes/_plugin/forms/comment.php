@@ -1,4 +1,5 @@
 <?php
+	
 	if(isset($_POST['submit'])){
 		
 		xDebug($_POST);
@@ -14,25 +15,28 @@
 		
 		if(sizeof($validate->errors) > 0)
 		{
+			xDebug($validate->errors, 'Fehler');
+		}
+		else{
 			
 			/*
-			 * 	Wenn keine Fehler vorliegen, kannst du die Werte aus den bereinigten Eingabewerten in die DB schreiben
-			 *  
-			 *  $res = $validate->santized;
-			 *  $res['comment'] wäre in diesem Fall der String mit dem Kommentar
-			 * 
-			 * */
-			 
-			//kristian start
-// 			$db_eventcomment = new dbclass_eventcomments();
-// 			/*
-// 				Bin ich mit eventcomments richtig? ;) ODer sind das Itemcomments?
-// 				Wie komme ich an globale variablen oder cookies? weil man die für die Event-ID braucht. Oder kannst du ein hidden field mit der Event-ID oder so mitschicken?
-// 			*/
-// 			$inservalues = ["EK_ID" => $db_eventcomment->getGUID(),"EK_E_ID" => "","EK_U_ID" => $_SESSION['user'],"EK_Kommentar" => $res['comment'],"EK_Date" => date('Y-m-d')]
-// 			$insert_eventcomment = $db_eventcomment->insert($inservalues);
-			//kristian ende
-			xDebug($validate->errors, 'Fehler');
+				Bin ich mit eventcomments richtig? ;) ODer sind das Itemcomments?
+				Wie komme ich an globale variablen oder cookies? weil man die für die Event-ID braucht. Oder kannst du ein hidden field mit der Event-ID oder so mitschicken?
+				EK_E_ID fehlt noch
+			*/
+			
+			//$_SESSION["user"] = "B899C69F-CEF1-7DC8-F6C5-281B1427E5D1"; //TESTdaten
+			$eventid = "D2B09373-8C98-48B6-86BD-B6AE00E26DD3"; //testdaten
+			
+			$db_eventcomment = new dbclass_eventcomments();
+			$res = $validate->sanitized;
+			$inservalues = ["EK_ID" => $db_eventcomment->getGUID(),
+							"EK_E_ID" => $eventid,
+							"EK_U_ID" => $_SESSION['user'],
+							"EK_Kommentar" => $res['comment'],
+							"EK_Date" => date('Y-m-d')
+							];
+			$insert_eventcomment = $db_eventcomment->insert($inservalues);
 		}
 		
 		/*** show the array of validated and sanitized variables ***/

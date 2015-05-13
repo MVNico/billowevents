@@ -15,7 +15,6 @@
 			  <div class="col-md-2"></div>
 			  <div class="col-md-8">
 <?php
-	/* Hier dann die DB Verbindung für den Content der Seite*/
 	
 	$file = $objMenu->get_activePage('file');
 	

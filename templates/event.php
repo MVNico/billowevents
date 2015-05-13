@@ -6,23 +6,54 @@
 	if (isset($_SESSION['user'])){
 		include_once PARTIALS_PATH.'/submenu.php';
 	}
+	
+	$dbuser = new dbclass_user();
+	
+	//Notizen oder Events löschen
+	if(isset($_GET['del'])){
+		if($_GET['del'] == 'notiz'){
+			$whereclause = [
+				"AND" => [
+					"N_ID" => $_GET["id"],
+					"N_U_ID" => $_SESSION["user"]
+				]];
+			$dbuser->delete("B_Notizen",$whereclause);
+		}
+		elseif($_GET['del'] == 'event'){
+			$whereclause = [
+				"AND" => [
+					"E_ID" => $_GET["id"],
+					"E_U_Creator" => $_SESSION["user"]
+				]];
+			$dbuser->delete("B_Event",$whereclause);
+		}
 
+		header('location:overview');
+	}
+	
+	//Events als Gast verlassen
+	if(isset($_GET['leave'])){
+		$whereclause = [
+			"AND" => [
+				"GL_E_ID" => $_GET['id'],
+				"GL_U_ID" => $_SESSION['user']
+			]];
+		$dbuser->delete("B_Gaesteliste",$whereclause);
+		header('location:overview');
+	}
+
+	//holt alle eigenen Events
+	$events_all_own = $dbuser->getEvents_own($_SESSION["user"]);
+	//holt alle events an denen der user teilnimmt
+	$events_all_participate = $dbuser->getEvents_participate($_SESSION["user"]);
+	//holt alle user-Notizen
+	$notizen_all = $dbuser->getNotizen_all($_SESSION["user"]);
+	
 ?>
         
 <div class="container-fluid">
 		  <div class="row">
 			  <div class="col-md-4">
-			  
-			<?php
-
-//			kristian start
-// 			 $db_event = new dbclass_event();
-// 			 $select_all_events = $db_event->select(null,null,null,null);
-
-// 				Auch möglich: 
-// 			$select_all_events = $db_event->select();
-// 		 xDebug($select_all_events);
-			?>
 				<div id="inv_events">
 				<label>Du bist bei diesen Events dabei:</label>
 				  	<table class="table">
@@ -31,22 +62,42 @@
 						  	<th>Datum / Uhrzeit</th>
 						  	<th>Eventname</th>
 						  	<th></th>
+							<th></th>
+							<th></th>
 					  	</thead>
 					  	<tbody>
-						  	<tr class="active">
-						  		<th scope="row">1</th>
-						  		<td>02.04.2016 15:32</td>
-						  		<td>Tischtennistunier</td>
-						  		<td><a class="btn btn-info btn-xs" href="#">Ansehen</a></td>
-						  		<td><a class="btn btn-warning btn-xs" href="#">Verlassen</a></td>
-						  	</tr>
-							<tr class="success">
-						  		<th scope="row">2</th>
-								<td>04.02.2016 10:31</td>
-								<td>Bingo</td>
-								<td><a class="btn btn-info btn-xs" href="#">Ansehen</a></td>
-								<td><a class="btn btn-warning btn-xs" href="#">Verlassen</a></td>
-							</tr>
+							<?php 
+								$loopcounter = 0;
+								foreach($events_all_participate as $events_all_participate_single){ 
+									$loopcounter ++;
+									if($loopcounter & 1){
+										//ungerade = active
+										$trclass = "active";
+									}
+									else{
+										//gerade = success
+										$trclass = "success";
+									}
+									?>
+									<tr class="<?php echo $trclass; ?>">
+										<th scope="row"><?php echo $loopcounter ?></th>
+										<td>
+											<table>
+												<tr><td><?php echo $events_all_participate_single["E_Datevon"]; ?></td></tr>
+												<tr><td><?php echo $events_all_participate_single["E_TimeVon"]; ?></td></tr>
+											</table>
+										</td>
+										<td>
+											<table>
+												<tr><td><?php echo $events_all_participate_single["E_Datebis"]; ?></td></tr>
+												<tr><td><?php echo $events_all_participate_single["E_TimeBis"]; ?></td></tr>
+											</table>
+										</td>
+										<td><?php echo $events_all_participate_single["E_Ueberschrift"]; ?></td>
+										<td><a class="btn btn-info btn-xs" href="/eventoverview?e_id=<?php echo $events_all_participate_single["E_ID"]; ?>">Ansehen</a></td>
+										<td><a class="btn btn-warning btn-xs" href="/overview?del=event&id=<?php echo $events_all_participate_single["E_ID"]; ?>">Verlassen</a></td>
+									</tr>
+							<?php } ?>
 					  	</tbody>
 					</table>
 				</div>
@@ -58,25 +109,47 @@
 						  	<th>#</th>
 						  	<th>Datum / Uhrzeit</th>
 						  	<th>Eventname</th>
-						  	<th></th>
+						  	<th>Überschrift</th>
+							<th>Beschreibung</th>
+							<th></th>
+							<th></th>
+							<th></th>
 					  	</thead>
 					  	<tbody>
-						  	<tr class="active">
-						  		<th scope="row">1</th>
-						  		<td>02.04.2016 15:32</td>
-						  		<td>Kuchen essen</td>
-						  		<td><a class="btn btn-info btn-xs" href="/overview?e_id=1">EDIT</a></td>
-						  		<td><a class="btn btn-info btn-xs" href="#">Ansehen</a></td>
-						  		<td><a class="btn btn-warning btn-xs" href="#">Löschen</a></td>
-						  	</tr>
-							<tr class="success">
-						  		<th scope="row">2</th>
-								<td>04.02.2016 10:31</td>
-								<td>Mehr kuchen!</td>
-								<td><a class="btn btn-info btn-xs" href="/overview?e_id=2">EDIT</a></td>
-								<td><a class="btn btn-info btn-xs" href="#">Ansehen</a></td>
-								<td><a class="btn btn-warning btn-xs" href="#">Löschen</a></td>
-							</tr>
+							<?php 
+								$loopcounter = 0;
+								foreach($events_all_own as $events_all_own_single){ 
+									$loopcounter ++;
+									if($loopcounter & 1){
+										//ungerade = active
+										$trclass = "active";
+									}
+									else{
+										//gerade = success
+										$trclass = "success";
+									}
+									?>
+									<tr class="<?php echo $trclass; ?>">
+										<th scope="row"><?php echo $loopcounter ?></th>
+										<td>
+											<table>
+												<tr><td><?php echo $events_all_own_single["E_Datevon"]; ?></td></tr>
+												<tr><td><?php echo $events_all_own_single["E_TimeVon"]; ?></td></tr>
+											</table>
+										</td>
+										<td>
+											<table>
+												<tr><td><?php echo $events_all_own_single["E_Datebis"]; ?></td></tr>
+												<tr><td><?php echo $events_all_own_single["E_TimeBis"]; ?></td></tr>
+											</table>
+										</td>
+										<td><?php echo $events_all_own_single["E_Ueberschrift"]; ?></td>
+										<td><?php echo $events_all_own_single["E_Beschreibung"]; ?></td>
+										<td><a class="btn btn-info btn-xs" href="/overview?e_id=<?php echo $events_all_own_single["E_ID"]; ?>">EDIT</a></td>
+										<td><a class="btn btn-info btn-xs" href="/eventoverview?e_id=<?php echo $events_all_own_single["E_ID"]; ?>">Ansehen</a></td>
+										<td><a class="btn btn-warning btn-xs" href="/overview?del=event&id=<?php echo $events_all_own_single["E_ID"]; ?>">Löschen</a></td>
+									</tr>
+							<?php } ?>
 					  	</tbody>
 					</table>
 				</div>
@@ -86,28 +159,36 @@
 				  	<table class="table">
 					  	<thead>
 						  	<th>#</th>
-						  	<th>Datum / Uhrzeit</th>
-						  	<th>Notiz</th>
+							<th>Titel</th>
+						  	<th>Beschreibung</th>
 						  	<th></th>
+							<th></th>
 					  	</thead>
 					  	<tbody>
-						  	<tr class="active">
-						  		<th scope="row">1</th>
-						  		<td>02.04.2016 15:32</td>
-						  		<td>Einkaufen</td>
-						  		<td><a class="btn btn-info btn-xs" href="/note?id=1">EDIT</a></td>
-						  		<td><a class="btn btn-warning btn-xs" href="#">Löschen</a></td>
-						  	</tr>
-							<tr class="success">
-							<th scope="row">2</th>
-						  		<td>01.01.2018 15:32</td>
-						  		<td>Schlafen</td>
-						  		<td><a class="btn btn-info btn-xs" href="/note?id=2">EDIT</a></td>
-						  		<td><a class="btn btn-warning btn-xs" href="#">Löschen</a></td>
-							</tr>
+							<?php 
+								$loopcounter = 0;
+								foreach($notizen_all as $notizen_single){ 
+									$loopcounter ++;
+									if($loopcounter & 1){
+										//ungerade = active
+										$trclass = "active";
+									}
+									else{
+										//gerade = success
+										$trclass = "success";
+									}
+									?>
+									<tr class="<?php echo $trclass; ?>">
+										<th scope="row"><?php echo $loopcounter; ?></th>
+										<td><?php echo $notizen_single["N_Beschreibung"]; ?></td>
+										<td><?php echo $notizen_single["N_Text"]; ?></td>
+										<td><a class="btn btn-info btn-xs" href="/note?id=<?php echo $notizen_single["N_ID"]; ?>">EDIT</a></td>
+										<td><a class="btn btn-warning btn-xs" href="/overview?del=notiz&id=<?php echo $notizen_single["N_ID"]; ?>">Löschen</a></td>
+									</tr>
+							<?php } ?>
 					  	</tbody>
 					</table>
-					<a href="#" class="btn btn-success">ADD</a>
+					<a href="/note?id=0" class="btn btn-success">ADD</a>
 				</div>
 			</div>
 		  <div class="col-md-8">

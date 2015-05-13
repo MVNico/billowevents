@@ -12,10 +12,6 @@
 				$N_U_ID = NULL
 		;
 		
-		/*public function __construct()
-		{
-			$this->_columns = ['N_ID','N_Beschreibung','N_Text','N_U_ID'];
-		}*/
 	}
 
 ?>

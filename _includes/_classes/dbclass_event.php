@@ -17,47 +17,49 @@
 				$E_Sichtbarkeit = NULL,
 				$E_U_Creator = NULL
 		;
-			
-		/*public function __construct()
-		{
-			$this->_columns = ['E_ID','E_Beschreibung','E_Ueberschrift','E_Datevon','E_Datebis','E_TimeVon','E_TimeBis','E_Ort','E_Sichtbarkeit','E_U_Creator'];
-		}*/
 		
 		/*
 			Select Eventcomments von Event
-			!!Noch nicht getestet, nur Idee!!
 		*/
 		
-		public function getEventcomments()
+		public function getEventcomments($event)
 		{
 			$table = "B_EventComments";
-			$columns = $this->getColumns($table);
-			$where = array("EK_E_ID" => $this->U_ID);
-			$eventcomments = $this->select($table,$columns,$where, NULL);//JOIN ?
+			$columns = ["EK_Kommentar","U_AnzeigeName"];
+			$where = ["EK_E_ID" => $event];
+			$join = ["[>]B_User" => ["U_ID" => "GL_U_ID"]];
+			$eventcomments = $this->select($table,$columns,$where,$join,false);
 
 			return $eventcomments;
 		}
 		
 		/*
 			Select Items von Event
-			!!Noch nicht getestet, nur Idee!!
 		*/
 		
-		public function getItems()
+		public function getItems($event)
 		{
-			$items = $this->select("B_Itemlist",NULL,array("I_E_ID" => $this->E_ID), NULL);
+			$table = "B_ItemList";
+			$columns = $this->getColumns($table);
+			$where = ["I_E_ID" => $event];
+			$items = $this->select($table,$columns,$where,null,false);
 			return $items;
 		}
 		
 		/*
-			Select Items von Event
-			!!Noch nicht getestet, nur Idee!!
+			Select Gäste von Event
 		*/
 		
-		public function getGaeste()
+		public function getGaeste($event)
 		{
-			$gaeste = $this->select("B_GaesteListe",NULL,array("GL_E_ID" => $this->E_ID), NULL);//JOIN wegen usernamen
+			$table = "B_GaesteListe";
+			$columns = ["U_AnzeigeName","U_Email"];
+			$where = ["GL_E_ID" => $event];
+			$join = ["[>]B_User" => ["GL_U_ID" => "U_ID"]];
+			$gaeste = $this->select($table,$columns,$where,$join,false);
+
 			return $gaeste;
+
 		}
 		
 	}

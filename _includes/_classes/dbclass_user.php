@@ -12,23 +12,20 @@
 				$U_Email = NULL,
 				$U_Name = NULL,
 				$U_Vorname = NULL,
-				$U_Straße = NULL,
+				$U_Strase = NULL,
 				$U_HausNr = NULL,
 				$U_Plz = NULL,
 				$U_Ort = NULL,
 				$U_Visibility = NULL
 		;
 		
-		/*public function __construct()
-		{
-			$this->_columns = ['U_ID','U_Anzeigename','U_PW','U_Email','U_Name','U_Vorname','U_Strase','U_HausNr','U_Plz','U_Ort','U_Visibility'];
-		}*/
 		/*
 			Überprüft ob User existiert. Gibt User-ID zurück, falls er existiert, sonst 0.
 		*/
 		public function userExists($whereclause){
 			$_userexists = 0;
 			$database = $this->getDatabase();
+			
 			$tets = $database->select($this->_tablename,["U_ID"],$whereclause);
 			
 			if(count($tets) == 1){
@@ -36,6 +33,7 @@
 			}
 			
 			if($database->error()[0] != "00000"){
+				echo"Fehlermedlung dbclass_user: <br />";
 				var_dump($database->error());
 			}
 			
@@ -48,42 +46,101 @@
 			!!Noch nicht getestet, nur Idee!!
 		*/
 		
-		public function getFriends()
+		public function getFriends($user)
 		{
-			$table = "B_FriendList";
-			$columns = $this->getColumns($table);
-			$where = array("F_U_ID" => $this->U_ID);
-			$friends = $this->select($table,$columns,$where, NULL);//JOIN einfügen? wgen namen
+			
+			$where = [
+				"AND" => [
+				"F_U_ID" => $user,
+				"F_Status" => 1
+				]];
+			$join = ["[><]B_FriendList" => ["U_ID" => "F_U_ID_F"]];
+			$friends = $this->select(null,null,$where,$join,false);
 			return $friends;
 		}
 		
+		public function getFriends_anfrage($user)
+		{
+			
+			$where = [
+				"AND" => [
+				"F_U_ID_F" => $user,
+				"F_Status" => 10
+				]];
+			$join = ["[><]B_FriendList" => ["U_ID" => "F_U_ID"]];
+			$friends_anfrage = $this->select(null,null,$where,$join,false);
+			return $friends_anfrage;
+		}
+		
 		/*
-			Select Events von User
-			!!Noch nicht getestet, nur Idee!!
+			Select eigene Events von User
 		*/
 		
-		public function getEvents()
+		public function getEvents_own($user)
 		{
 			$table = "B_Event";
 			$columns = $this->getColumns($table);
-			$where = array("E_U_Creator" => $this->U_ID);
-			$events = $this->select($table,$columns,$where, NULL);
+			$where = [
+			"E_U_Creator" => $user,
+			"ORDER" => "E_Datevon asc"
+			];
+			$events = $this->select($table,$columns,$where,null,false);
+			return $events;
+		}
+		
+		/*
+			Select Events an denen User teilnimmt
+		*/
+		
+		public function getEvents_participate($user)
+		{
+			$table = "B_Event";
+			$columns = $this->getColumns($table);
+			$where = [
+				"AND" => [
+					"GL_U_ID" => $user,
+					"GL_Teilnahmestatus" => 1
+					],
+				"ORDER" => "E_Datevon asc"
+				];
+			$join = ["[><]B_Gaesteliste" => ["E_ID" => "GL_E_ID"]];
+			$events = $this->select($table,$columns,$where,$join,false);
 			return $events;
 		}
 		
 		/*
 			Select Notizen von User
-			!!Noch nicht getestet, nur Idee!!
 		*/
 		
-		public function getNotizen()
+		public function getNotizen_all($user)
 		{
 			$table = "B_Notizen";
 			$columns = $this->getColumns($table);
-			$where = array("N_U_ID" => $this->U_ID);
-			$notizen = $this->select($table,$columns,$where, NULL);
+			$where = array("N_U_ID" => $user);
+			$notizen = $this->select($table,$columns,$where,NULL,false);
 			return $notizen;
 		}
+		
+		public function gethash($s)
+		{
+
+			$hash = 0;
+			$len = strlen($s);
+			for($i = 0; $i <$len; $i++){
+				$hash = 31 * $hash + $s[$i];
+				
+			}
+			return $hash*8;
+			/*$stringLength = strlen($str);
+			for ($i = 0; $i < $stringLength; $i++){
+				$char = $str[$i];
+				$str_int += hash("md5",$char) * 8;
+			}*/
+			
+			//return $str_int;
+		}
+		
+		
 	}
 
 ?>

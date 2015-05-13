@@ -12,12 +12,7 @@
 				$EK_Kommentar = NULL,
 				$EK_Date = NULL
 				;
-		
-		/*public function __construct()
-		{
-			$this->_columns = ['EK_ID','EK_E_ID','EK_U_ID','EK_Kommentar','EK_Date'];
-		}*/
-		
+				
 	}
 
 ?>

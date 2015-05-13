@@ -4,22 +4,26 @@
 			'firstname' => '',
 			'lastname' => '',
 			'username' => '',
-			'email' => ''
+			'email' => '',
+			'strasse' => '',
+			'hausnr' => '',
+			'plz' => '',
+			'ort' => ''
 	);
-if (isset($_SESSION['user'])){
-	/*
-	 * 		DB Abfrage nach dieser Userid / Eventid
-	 * 		Damit diese Werte beim Editieren eingefügt werden können
-	 *
-	 *  */
+	if (isset($_SESSION['user'])){
+		/*
+		 * 		DB Abfrage nach dieser Userid / Eventid
+		 * 		Damit diese Werte beim Editieren eingefügt werden können
+		 *
+		 *  */
 
-	$DatenAusDB = array(
-			'firstname' => 'Hans',
-			'lastname' => 'Peter',
-			'username' => 'Hans.Peter',
-			'email' => 'blub@blub.de'
-	);
-}
+		$DatenAusDB = array(
+				'firstname' => 'Hans',
+				'lastname' => 'Peter',
+				'username' => 'Hans.Peter',
+				'email' => 'blub@blub.de'
+		);
+	}
 
 	if(isset($_POST['submit'])){
 		
@@ -32,7 +36,11 @@ if (isset($_SESSION['user'])){
 	        'username'=>array('type'=>'string',  'required'=>true, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>false),
 	        'email'=>array('type'=>'email',  'required'=>true, 'min'=>6, 'max'=>150, 'trim'=>true, 'special_chars'=>false),
 	        'password'=>array('type'=>'password', 'required'=>true, 'min'=>6, 'max'=>120, 'trim'=>false, 'special_chars'=>false),
-	        'agree'=>array('type'=>'int',  'required'=>true, 'min'=>0, 'max'=>0, 'trim'=>false, 'special_chars'=>false)
+	        'agree'=>array('type'=>'int',  'required'=>true, 'min'=>0, 'max'=>0, 'trim'=>false, 'special_chars'=>false),
+			'strasse'=>array('type'=>'string',  'required'=>false, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>false),
+			'hausnr'=>array('type'=>'string',  'required'=>false, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>false),
+			'plz'=>array('type'=>'string',  'required'=>false, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>false),
+			'ort'=>array('type'=>'string',  'required'=>false, 'min'=>1, 'max'=>50, 'trim'=>true, 'special_chars'=>false)
 	    );
 		
 		$validate = new validation();
@@ -40,28 +48,28 @@ if (isset($_SESSION['user'])){
 		$validate->AddRules($rules_array);
 		$validate->run();
 		
-		if(sizeof($validate->errors) > 0)
+		if(sizeof($validate->errors) == 0)
 		{
-			/*
-			 * 	Wenn keine Fehler vorliegen, kannst du die Werte aus den bereinigten Eingabewerten in die DB schreiben
-			 *
-			 *  $res = $validate->santized;
-			 *  $res['firstname'] wäre in diesem Fall der String mit dem Vornamen
-			 *
-			 * */
-			 //kristian start
-// 			 $db_user = new dbclass_user();
-// 			 /*
-// 				DB Bild vom Phil zeigt an, dass PW's nur als bigint gespeichert werden können. ist die Validierung auch danach?
-// 			 */
-// 			 $insertvalues = ["U_ID" => $db_user->getGUID(),"U_AnzeigeName" => $res["username"],"U_PW" => $res["password"],"U_Email" => $res["email"],"U_Vorname" => $res["firstname"],"U_Name" => $res["lastname"]];
-// 			 $insertevent = $db_user->insert($inservalues);
-			 //kristian end
-			xDebug($validate->errors);
+			$db_user = new dbclass_user();
+			$res = $validate->sanitized;
+			$userid_new = $db_user->getGUID();
+			$insertvalues = [
+				"U_ID" => $userid_new,
+				"U_AnzeigeName" => $res["username"],
+				"U_PW" => hash("md5",$res["password"]),
+				"U_Email" => $res["email"],
+				"U_Vorname" => $res["firstname"],
+				"U_Name" => $res["lastname"],
+				"U_Strasse" => $res["strasse"],
+				"U_HausNr" => $res["hausnr"],
+				"U_Plz" => $res["plz"],
+				"U_Ort" => $res["ort"]
+			];
+			$insertevent = $db_user->insert($insertvalues);
+			$_SESSION['user'] = $userid_new;
+			header('location:overview');
 		}
-		
-		/*** show the array of validated and sanitized variables ***/
-		xDebug($validate->sanitized);
+
 	}
 ?>
 
@@ -105,6 +113,42 @@ if (isset($_SESSION['user'])){
 	  <label class="col-md-4 control-label" for="email">Email</label>  
 	  <div class="col-md-4">
 	  <input value="<?php echo $DatenAusDB['email']; ?>" id="email" name="email" placeholder="Email" class="form-control input-md">
+	    
+	  </div>
+	</div>
+	
+	<!-- Strasse-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="email">Strasse</label>  
+	  <div class="col-md-4">
+	  <input value="<?php echo $DatenAusDB['strasse']; ?>" id="strasse" name="strasse" placeholder="Strasse" class="form-control input-md">
+	    
+	  </div>
+	</div>
+	
+	<!-- HausNr-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="email">Hausnummer</label>  
+	  <div class="col-md-4">
+	  <input value="<?php echo $DatenAusDB['hausnr']; ?>" id="hausnr" name="hausnr" placeholder="Hausnummer" class="form-control input-md">
+	    
+	  </div>
+	</div>
+	
+	<!-- PLZ-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="email">Postleitzahl</label>  
+	  <div class="col-md-4">
+	  <input value="<?php echo $DatenAusDB['plz']; ?>" id="plz" name="plz" placeholder="Postleitzahl" class="form-control input-md">
+	    
+	  </div>
+	</div>
+	
+	<!-- Ort -->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="email">Ort</label>  
+	  <div class="col-md-4">
+	  <input value="<?php echo $DatenAusDB['ort']; ?>" id="ort" name="ort" placeholder="Ort" class="form-control input-md">
 	    
 	  </div>
 	</div>

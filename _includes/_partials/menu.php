@@ -71,5 +71,21 @@ $arrMenu = array(
 		'name'=>'wishlist',
 		'display' =>'none',
 	),
+	9=>array(
+	'parent'=>0,
+	'label'=>'Event-Übersicht',
+	'template'=>'home',
+	'file'=>'eventoverview',
+	'name'=>'eventoverview',
+	'display'=>'none'
+	),
+	10=>array(
+	'parent'=>0,
+	'label'=>'Benutzerverwaltung',
+	'template'=>'home',
+	'file'=>'adduser',
+	'name'=>'adduser',
+	'display'=>'none'
+	),
 );
 ?>
